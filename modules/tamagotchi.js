@@ -1,6 +1,21 @@
 class Tamagotchi {
   #hunger;
   #happiness;
+  #hungrynessInterval;
+  #feedButton;
+  #tamaContainer;
+  #errorMessage;
+  #select;
+  #inputText;
+  #tamaTitle;
+  #currentHappiness;
+  #currentHungryness;
+  #statsForHappiness;
+  #statsForHungryness;
+  #happinessButton;
+  #interactWithTama;
+  #happinessInterval;
+  #dead;
 
   constructor(hunger, happiness) {
     this.#hunger = hunger;
@@ -19,115 +34,122 @@ class Tamagotchi {
     return this.#hunger;
   }
   renderTama() {
-    let tamaContainer = document.createElement("div");
-    tamaContainer.setAttribute("id", "tamaContainer");
+    this.#tamaContainer = document.createElement("div");
+    this.#tamaContainer.setAttribute("id", "tamaContainer");
 
-    let errorMessage = document.getElementById("errorMessage");
+    this.#errorMessage = document.getElementById("errorMessage");
 
-    let select = document.getElementById("select").value;
-    console.log(select);
+    this.#select = document.getElementById("select").value;
 
-    let inputText = document.getElementById("inputText").value;
+    this.#inputText = document.getElementById("inputText").value;
 
-    if (select === "The Fabolous") {
-      tamaContainer.style.backgroundColor = "hotpink";
-    } else if (select === "The Insane") {
-      tamaContainer.style.backgroundColor = "burlywood";
-    } else if (select === "The Seeker") {
-      tamaContainer.style.backgroundColor = "orange";
-    } else if (select === "The Dreamer") {
-      tamaContainer.style.backgroundColor = "purple";
+    if (this.#select === "The Fabolous") {
+      this.#tamaContainer.style.backgroundColor = "hotpink";
+    } else if (this.#select === "The Insane") {
+      this.#tamaContainer.style.backgroundColor = "burlywood";
+    } else if (this.#select === "The Seeker") {
+      this.#tamaContainer.style.backgroundColor = "orange";
+    } else if (this.#select === "The Dreamer") {
+      this.#tamaContainer.style.backgroundColor = "purple";
     }
 
-    if (inputText === "") {
-      errorMessage.innerHTML = "Fill in your name!";
+    if (this.#inputText === "") {
+      this.#errorMessage.innerHTML = "Fill in your name!";
       return;
     }
 
-    let tamaTitle = document.createElement("p");
-    tamaTitle.innerText = `${inputText} ${select} `;
+    this.#tamaTitle = document.createElement("p");
+    this.#tamaTitle.innerText = `${this.#inputText} ${this.#select} `;
 
-    let currentHappiness = this.getHappinessStat();
-    let currentHungryness = this.getHungrynessStat();
+    this.#currentHappiness = this.getHappinessStat();
+    this.#currentHungryness = this.getHungrynessStat();
 
-    let statsForHappiness = document.createElement("p");
-    let statsForHungryness = document.createElement("p");
+    this.#statsForHappiness = document.createElement("p");
+    this.#statsForHungryness = document.createElement("p");
 
-    statsForHappiness.innerHTML = `Happiness: ${currentHappiness}`;
-    statsForHungryness.innerHTML = `Hungryness: ${currentHungryness}`;
+    this.#statsForHappiness.innerHTML = `Happiness: ${this.#currentHappiness}`;
+    this.#statsForHungryness.innerHTML = `Hungryness: ${
+      this.#currentHungryness
+    }`;
 
-    let feedButton = document.createElement("button");
-    feedButton.setAttribute("id", "feedButton");
-    feedButton.innerText = `Feed`;
+    this.#feedButton = document.createElement("button");
+    this.#feedButton.setAttribute("id", "feedButton");
+    this.#feedButton.innerText = `Feed`;
 
-    let happinessButton = document.createElement("button");
-    happinessButton.setAttribute("id", "happinessButton");
-    happinessButton.innerText = `Play`;
+    this.#happinessButton = document.createElement("button");
+    this.#happinessButton.setAttribute("id", "happinessButton");
+    this.#happinessButton.innerText = `Play`;
 
-    const interactWithTama = (stat) => {
+    this.#interactWithTama = (stat) => {
       if (stat === "happiness") {
-        let currentHappiness = this.getHappinessStat();
-        if (currentHappiness < 10) {
-          this.setHappinessStat(currentHappiness + 1);
+        this.#currentHappiness = this.getHappinessStat();
+        if (this.#currentHappiness < 10) {
+          this.setHappinessStat(this.#currentHappiness + 1);
         }
       }
       if (stat === "hungryness") {
-        let currentHungryness = this.getHungrynessStat();
-        if (currentHungryness < 10) {
-          this.setHungerStat(currentHungryness + 1);
+        this.#currentHungryness = this.getHungrynessStat();
+        if (this.#currentHungryness < 10) {
+          this.setHungerStat(this.#currentHungryness + 1);
         }
       }
     };
 
-    feedButton.addEventListener("click", () => interactWithTama("hungryness"));
-
-    happinessButton.addEventListener("click", () =>
-      interactWithTama("happiness")
+    this.#feedButton.addEventListener("click", () =>
+      this.#interactWithTama("hungryness")
     );
 
-    const happinessInterval = setInterval(() => {
-      let currentHappiness = this.getHappinessStat();
-      this.setHappinessStat(currentHappiness - 1);
+    this.#happinessButton.addEventListener("click", () =>
+      this.#interactWithTama("happiness")
+    );
 
-      statsForHappiness.innerHTML = `Happiness : ${currentHappiness}`;
+    this.#happinessInterval = setInterval(() => {
+      this.#currentHappiness = this.getHappinessStat();
+      this.setHappinessStat(this.#currentHappiness - 1);
 
-      if (currentHappiness === 0) {
-        let dead = document.createElement("h1");
-        dead.innerHTML = `Happiness reached 0. Pet is dead.`;
-        tamaContainer.append(dead);
-        feedButton.disabled = true;
-        happinessButton.disabled = true;
-        this.setHungerStat((currentHungryness = 0));
-        tamaContainer.style.backgroundColor = "red";
-        clearInterval(happinessInterval);
+      this.#statsForHappiness.innerHTML = `Happiness : ${
+        this.#currentHappiness
+      }`;
+
+      if (this.#currentHappiness === 0) {
+        this.#dead = document.createElement("h1");
+        this.#dead.innerHTML = `Happiness reached 0. Pet is dead.`;
+        this.#tamaContainer.append(this.#dead);
+        this.#feedButton.disabled = true;
+        this.#happinessButton.disabled = true;
+        this.setHungerStat((this.#currentHungryness = 0));
+        this.#tamaContainer.style.backgroundColor = "red";
+        clearInterval(this.#happinessInterval);
       }
     }, 1000);
 
-    const hungrynessInterval = setInterval(() => {
-      let currentHungryness = this.getHungrynessStat();
-      this.setHungerStat(currentHungryness - 1);
+    this.#hungrynessInterval = setInterval(() => {
+      this.#currentHungryness = this.getHungrynessStat();
+      this.setHungerStat(this.#currentHungryness - 1);
 
-      statsForHungryness.innerHTML = `Hungryness : ${currentHungryness}`;
+      this.#statsForHungryness.innerHTML = `Hungryness : ${
+        this.#currentHungryness
+      }`;
 
-      if (currentHungryness === 0) {
-        let dead = document.createElement("h1");
-        dead.innerHTML = `Hungryness reached 0. Pet is dead.`;
-        tamaContainer.append(dead);
-        feedButton.disabled = true;
-        happinessButton.disabled = true;
-        this.setHappinessStat((currentHappiness = 0));
-        tamaContainer.style.backgroundColor = "red";
-        clearInterval(hungrynessInterval);
+      if (this.#currentHungryness === 0) {
+        this.#dead = document.createElement("h1");
+        this.#dead.innerHTML = `Hungryness reached 0. Pet is dead.`;
+        this.#tamaContainer.append(this.#dead);
+        this.#feedButton.disabled = true;
+        this.#happinessButton.disabled = true;
+        this.setHappinessStat((this.#currentHappiness = 0));
+        this.#tamaContainer.style.backgroundColor = "red";
+        clearInterval(this.#hungrynessInterval);
       }
     }, 2000);
 
-    tamaContainer.append(tamaTitle);
-    tamaContainer.append(tamaTitle);
-    tamaContainer.appendChild(feedButton);
-    tamaContainer.appendChild(happinessButton);
-    tamaContainer.append(statsForHappiness);
-    tamaContainer.append(statsForHungryness);
-    document.body.append(tamaContainer);
+    this.#tamaContainer.append(this.#tamaTitle);
+    this.#tamaContainer.append(this.#tamaTitle);
+    this.#tamaContainer.appendChild(this.#feedButton);
+    this.#tamaContainer.appendChild(this.#happinessButton);
+    this.#tamaContainer.append(this.#statsForHappiness);
+    this.#tamaContainer.append(this.#statsForHungryness);
+    document.body.append(this.#tamaContainer);
   }
 }
 
