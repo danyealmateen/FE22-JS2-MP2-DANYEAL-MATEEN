@@ -53,8 +53,8 @@ class Tamagotchi {
     let statsForHappiness = document.createElement("p");
     let statsForHungryness = document.createElement("p");
 
-    statsForHappiness.innerHTML = `Happiness : ${currentHappiness}`;
-    statsForHungryness.innerHTML = `Hungryness : ${currentHungryness}`;
+    statsForHappiness.innerHTML = `Happiness: ${currentHappiness}`;
+    statsForHungryness.innerHTML = `Hungryness: ${currentHungryness}`;
 
     let feedButton = document.createElement("button");
     feedButton.setAttribute("id", "feedButton");
